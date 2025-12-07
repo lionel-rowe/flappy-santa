@@ -1,6 +1,7 @@
 // @ts-check
 import { canvas, ctx } from './canvas.mjs'
 import { DELTA_X } from './constants.mjs'
+import { GameObject } from './gameObject.mjs'
 import { game } from './game.mjs'
 import { images } from './images.mjs'
 
@@ -15,12 +16,13 @@ class Obstacle {
 	}
 }
 
-export class Scenery {
-	top = { img: images.pipeTop }
-	bottom = { img: images.pipeBottom }
+export class Scenery extends GameObject {
+	top = { img: images.obstacleTop }
+	bottom = { img: images.obstacleBottom }
 	gap = 85
 	moved = true
 	obstacles = /** @type {Obstacle[]} */ ([])
+	/** @override */
 	draw() {
 		for (let i = 0; i < this.obstacles.length; ++i) {
 			const p = this.obstacles[i]
@@ -32,6 +34,7 @@ export class Scenery {
 			)
 		}
 	}
+	/** @override */
 	update() {
 		if (game.status !== 'playing') return
 		if (game.frames % 100 === 0) {

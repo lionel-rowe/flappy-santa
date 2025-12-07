@@ -10,8 +10,8 @@ export const images = await promiseAllKeyed({
 
 	ground: loadImage(`${IMG_DIR}/ground.png`),
 	background: loadImage(`${IMG_DIR}/background.png`),
-	pipeTop: loadImage(`${IMG_DIR}/pipe-top.png`),
-	pipeBottom: loadImage(`${IMG_DIR}/pipe-bottom.png`),
+	obstacleTop: loadImage(`${IMG_DIR}/obstacle-top.png`),
+	obstacleBottom: loadImage(`${IMG_DIR}/obstacle-bottom.png`),
 	getReady: loadImage(`${IMG_DIR}/get-ready.png`),
 	gameOver: loadImage(`${IMG_DIR}/game-over.png`),
 })

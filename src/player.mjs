@@ -1,14 +1,13 @@
 // @ts-check
 import { ctx } from './canvas.mjs'
+import { GameObject } from './gameObject.mjs'
 import { game } from './game.mjs'
 import { sounds } from './sounds.mjs'
+import { images } from './images.mjs'
 /** @typedef {import('./sprite.mjs').Sprite} Sprite */
 
-export class Player {
-	/** @param {Sprite} sprites */
-	constructor(sprites) {
-		this.sprites = sprites
-	}
+export class Player extends GameObject {
+	sprite = images.player
 
 	dead = false
 	rotatation = 0
@@ -20,24 +19,26 @@ export class Player {
 	#frame = 0
 
 	set frame(value) {
-		this.#frame = value % this.sprites.numFrames
+		this.#frame = value % this.sprite.numFrames
 	}
 	get frame() {
 		return this.#frame
 	}
 
+	/** @override */
 	draw() {
 		ctx.save()
 		ctx.translate(this.x, this.y)
 		ctx.rotate(this.rotatation * Math.PI / 180)
-		const h = this.sprites.spriteHeight
-		const w = this.sprites.spriteWidth
-		this.sprites.render(ctx, [-w / 2, -h / 2], this.frame)
+		const h = this.sprite.spriteHeight
+		const w = this.sprite.spriteWidth
+		this.sprite.render(ctx, [-w / 2, -h / 2], this.frame)
 		ctx.restore()
 	}
 
+	/** @override */
 	update() {
-		const r = this.sprites.spriteWidth / 2
+		const r = this.sprite.spriteWidth / 2
 
 		switch (game.status) {
 			case 'initial': {
@@ -96,7 +97,7 @@ export class Player {
 
 		const x = scenery.obstacles[0].x
 		const y = scenery.obstacles[0].y
-		const r = (this.sprites.spriteHeight + this.sprites.spriteWidth) / 4
+		const r = (this.sprite.spriteHeight + this.sprite.spriteWidth) / 4
 
 		const roof = y + scenery.top.img.height
 		const floor = roof + scenery.gap

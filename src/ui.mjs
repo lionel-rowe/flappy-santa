@@ -1,20 +1,17 @@
 // @ts-check
 import { canvas, ctx } from './canvas.mjs'
+import { GameObject } from './gameObject.mjs'
 import { game } from './game.mjs'
 import { images } from './images.mjs'
 /** @typedef {import('./sprite.mjs').Sprite} Sprite */
 
-export class Ui {
-	/**
-	 * @param {Sprite} tapToStart
-	 */
-	constructor(tapToStart) {
-		this.tapToStart = tapToStart
-	}
+export class Ui extends GameObject {
+	tapToStart = images.tapToStart
 
 	getReady = { img: images.getReady }
 	gameOver = { img: images.gameOver }
 	frame = 0
+	/** @override */
 	draw() {
 		switch (game.status) {
 			case 'initial': {
@@ -38,46 +35,65 @@ export class Ui {
 		}
 		this.drawScore()
 	}
-	/**
-	 * @param {string} text
-	 * @param {[number, number]} origin
-	 */
-	drawText(text, origin) {
-		ctx.strokeText(text, ...origin)
-		ctx.fillText(text, ...origin)
-	}
+
 	drawScore() {
 		ctx.fillStyle = '#FFFFFF'
 		ctx.strokeStyle = '#000000'
 		switch (game.status) {
 			case 'playing': {
 				ctx.lineWidth = 3
-				ctx.font = '35px Impact, sans-serif'
-				this.drawText(String(game.score), [canvas.width / 2 - 5, 50])
+				ctx.font = this.font(35)
+				this.drawText(String(game.score), 50)
 				break
 			}
 			case 'gameOver': {
 				ctx.lineWidth = 3
-				ctx.font = '30px Impact, sans-serif'
-				const scoreMessage = `SCORE :     ${game.score}`
+				ctx.font = this.font(30)
+				const scoreMessage = this.scoreMessage('SCORE', game.score)
+				this.drawText(scoreMessage, canvas.height / 2)
 				try {
 					const best = Math.max(
 						game.score,
 						parseInt(localStorage.getItem('best') ?? '0'),
 					)
 					localStorage.setItem('best', String(best))
-					const bestScoreMessage = `BEST  :     ${best}`
-					this.drawText(scoreMessage, [canvas.width / 2 - 80, canvas.height / 2 + 0])
-					this.drawText(bestScoreMessage, [canvas.width / 2 - 80, canvas.height / 2 + 30])
+					const bestScoreMessage = this.scoreMessage('BEST', best)
+					this.drawText(bestScoreMessage, canvas.height / 2 + 30)
 				} catch (e) {
 					console.error(e)
-					this.drawText(scoreMessage, [canvas.width / 2 - 85, canvas.height / 2 + 15])
 				}
 
 				break
 			}
 		}
 	}
+
+	/** @param {number} px */
+	font(px) {
+		return `bold ${px}px monospace`
+	}
+
+	/**
+	 * @param {string} caption
+	 * @param {number} score
+	 */
+	scoreMessage(caption, score) {
+		return `${caption.padEnd(6)}:${String(score).padStart(6)}`
+	}
+
+	/**
+	 * @param {string} text
+	 * @param {number} originY
+	 */
+	drawText(text, originY) {
+		const metrics = ctx.measureText(text)
+		const originX = (canvas.width - metrics.width) / 2
+		const params = /** @type {const} */ ([text, originX, originY])
+		ctx.strokeText(...params)
+		ctx.fillText(...params)
+	}
+
+	/** @override */
 	update() {
 		if (game.status === 'playing') return
 		this.frame += game.frames % 10 === 0 ? 1 : 0

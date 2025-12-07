@@ -18,12 +18,16 @@ Christmas assets from various sources:
   - Sprites
   - Background
   - Sound
+- Reduce background opacity
 - Page title, favicon
+- Remove visual artifacts on player sprite
+- Music
+  - Play/mute button
+- Parameterize difficulty + add difficulty levels
+- Snowfall
+- Parallax scrolling
+- Hitboxes
 - Custom assets
 - Drag sleigh
   - Collisions
   - Physics
-- Music
-  - Play/mute button
-- Snowfall
-- Parallax scrolling
