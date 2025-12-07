@@ -7,10 +7,9 @@ export class Background extends GameObject {
 	img = images.background
 	/** @override */
 	draw() {
-		ctx.fillStyle = '#30c0df'
+		ctx.drawImage(this.img, 0, 0, canvas.width, canvas.height)
+		ctx.fillStyle = '#fff8'
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
-		const y = canvas.height - this.img.height
-		ctx.drawImage(this.img, 0, y)
 	}
 	/** @override */
 	update() {

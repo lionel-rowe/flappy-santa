@@ -2,10 +2,10 @@
 import { Sprite } from './sprite.mjs'
 import { promiseAllKeyed } from './utils.mjs'
 
-const IMG_DIR = '/img'
+const IMG_DIR = '/img2'
 
 export const images = await promiseAllKeyed({
-	player: Sprite.load(`${IMG_DIR}/player.png`, 3),
+	player: Sprite.load(`${IMG_DIR}/player.png`, 6),
 	tapToStart: Sprite.load(`${IMG_DIR}/tap-to-start.png`, 2),
 
 	ground: loadImage(`${IMG_DIR}/ground.png`),

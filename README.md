@@ -1,4 +1,4 @@
-# Flappy Santa
+# Flappy Christmas
 
 Initial logic and assets based on https://github.com/aaarafat/JS-Flappy-Bird/ (in turn based on original Flappy Bird game by Dong Nguyen).
 

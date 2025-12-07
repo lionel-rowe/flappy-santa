@@ -15,10 +15,10 @@ export class Ui extends GameObject {
 	draw() {
 		switch (game.status) {
 			case 'initial': {
-				const y = (canvas.height - this.getReady.img.height) / 2
+				const y = (canvas.height - this.getReady.img.height) / 2.3
 				const x = (canvas.width - this.getReady.img.width) / 2
 				const tx = (canvas.width - this.tapToStart.spriteWidth) / 2
-				const ty = y + this.getReady.img.height - this.tapToStart.spriteHeight
+				const ty = y + this.getReady.img.height + 10
 				ctx.drawImage(this.getReady.img, x, y)
 				this.tapToStart.render(ctx, [tx, ty], this.frame)
 				break
