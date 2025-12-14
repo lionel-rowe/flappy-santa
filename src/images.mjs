@@ -8,6 +8,7 @@ export const images = await promiseAllKeyed({
 	player: Sprite.load(`${IMG_DIR}/player.png`, 6),
 	tapToStart: Sprite.load(`${IMG_DIR}/tap-to-start.png`, 2),
 
+	sleigh: loadImage(`${IMG_DIR}/sleigh.png`),
 	ground: loadImage(`${IMG_DIR}/ground.png`),
 	background: loadImage(`${IMG_DIR}/background.png`),
 	obstacleTop: loadImage(`${IMG_DIR}/obstacle-top.png`),
