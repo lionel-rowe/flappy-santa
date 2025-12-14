@@ -8,31 +8,28 @@ See [SETUP.md](SETUP.md) for instructions on setting up the development environm
 
 ## Ideas
 
-<!-- - Swap in Christmas-themed assets
-  - Sprites
-  - Background
-  - Sound -->
-<!-- - Reduce background opacity -->
-<!-- - Page title -->
-
-- Parameterize difficulty
-  - Gap
-  - Frequency
-  - Hitboxes
-  - Difficulty levels
-
-<!-- - Favicon -->
-<!-- - Music
-  - Play/mute button -->
-
-- Snowfall
-  - https://github.com/catdad/canvas-confetti
-- Remove visual artifacts on player sprite
-- Custom assets
-- Drag sleigh
-  - Rigid version
-  - Physics?
-  - Collisions?
+- [x] Swap in Christmas-themed assets
+  - [x] Sprites
+  - [x] Background
+  - [x] Sound
+- [x] Reduce background opacity
+- [x] Page title
+- [ ] Parameterize difficulty
+  - [ ] Gap
+  - [ ] Frequency
+  - [ ] Hitboxes
+  - [ ] Difficulty levels
+- [x] Favicon
+- [x] Music
+  - [x] Play/mute button
+- [x] Snowfall
+  - [x] https://github.com/catdad/canvas-confetti
+- [x] Remove visual artifacts on player sprite
+- [x] Custom assets
+- [ ] Drag sleigh
+  - [ ] Rigid version
+  - [ ] Physics?
+  - [ ] Collisions?
 
 ## Credits
 
