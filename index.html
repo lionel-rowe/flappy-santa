@@ -5,12 +5,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Flappy Christmas</title>
 		<link rel="stylesheet" href="src/styles.css">
-
-		<link rel="icon" type="image/png" href="img2/santa.png">
+		<link rel="icon" type="image/png" href="img2/santa-east.png">
 	</head>
 	<body>
-		<canvas id="target"></canvas>
+		<main class="container">
+			<canvas id="target"></canvas>
+			<div id="audio-controls">
+				<button></button>
+				<audio src="music/jingle-bells.mp3" preload="auto" loop></audio>
+			</div>
+		</main>
 		<script src="src/main.mjs" type="module"></script>
-		<audio src="sounds2/jingle-bells.mp3" preload="auto" controls loop></audio>
 	</body>
 </html>

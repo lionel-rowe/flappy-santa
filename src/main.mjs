@@ -8,6 +8,7 @@ import { sounds } from './sounds.mjs'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, FRAME_INTERVAL } from './constants.mjs'
 import { Player } from './player.mjs'
 import { Scenery } from './scenery.mjs'
+import './music.mjs'
 /** @typedef {import('./sprite.mjs').Sprite} Sprite */
 
 canvas.width = CANVAS_WIDTH

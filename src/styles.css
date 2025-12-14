@@ -1,6 +1,32 @@
+.container {
+	position: relative;
+	position: relative;
+	display: inline-flex;
+	margin: auto;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
 canvas#target {
 	display: block;
-	margin: auto;
-	padding: auto;
 	outline: none;
+}
+
+#audio-controls {
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+		outline: none;
+		filter: invert();
+
+		img {
+			width: 1.5rem;
+		}
+	}
 }

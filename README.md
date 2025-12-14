@@ -48,3 +48,6 @@ Christmas assets from various sources:
   - by Viacheslav https://pixabay.com/music/christmas-jingle-bells-444574/ Pixabay License
   - by Kevin MacLeod http://incompetech.com CC BY 4.0
   - Metal version https://davidkbd.itch.io/hou-hou-hou-xmas-songs-turned-to-metal-music-pack
+- Audio icons
+  - https://commons.wikimedia.org/wiki/File:Speaker_Icon.svg (CC0/public domain)
+  - https://commons.wikimedia.org/wiki/File:Mute_Icon.svg (CC0/public domain)
