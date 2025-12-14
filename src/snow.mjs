@@ -2,52 +2,64 @@
 import './vendor/confetti.browser.min.js'
 
 import { GameObject } from './gameObject.mjs'
-import { ctx } from './canvas.mjs'
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants.mjs'
+import { canvas, ctx } from './canvas.mjs'
 
 // @ts-ignore TODO types
 const confetti = globalThis.confetti
 
-export class Snow extends GameObject {
-	// canvas = new OffscreenCanvas(CANVAS_WIDTH, CANVAS_HEIGHT)
-	canvas = Object.assign(document.createElement('canvas'), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT })
-	confetti = confetti.create(this.canvas, { useWorker: true })
+/**
+ * @typedef {{ speed: number, opacity: number, spawnFrequency: number, size: number }} SnowParams
+ * `speed` - Speed of the snowflakes (1 = "normal speed" = 15-second lifetime for each snowflake)
+ * `opacity` - Opacity of the snowflakes (0 to 1)
+ * `spawnFrequency` - Likelihood of spawning a snowflake each frame (0 to 1)
+ * `size` - Size of the snowflakes
+ */
 
-	duration = 15 * 1000
-	animationEnd = Date.now() + this.duration
+export class Snow extends GameObject {
+	/** @param {SnowParams} params */
+	constructor({ speed, opacity, spawnFrequency, size }) {
+		super()
+		this.speed = speed
+		this.opacity = opacity
+		this.spawnFrequency = spawnFrequency
+		this.size = size
+	}
+
+	canvas = Object.assign(document.createElement('canvas'), { width: canvas.width, height: canvas.height })
+	confetti = confetti.create(this.canvas, {/* useWorker: true */})
+
 	skew = 1
 
 	/** @override */
 	update() {
-		const duration = 15 * 1000
-		const animationEnd = Date.now() + duration
-
-		const timeLeft = animationEnd - Date.now()
-		const ticks = Math.max(200, 500 * (timeLeft / duration))
+		const ticks = 500
 		this.skew = Math.max(0.8, this.skew - 0.001)
 
+		const particleCount = Number(this.spawnFrequency > Math.random())
+		const colors = ['#ffffff']
+
 		this.confetti({
-			// particleCount: 0,
-			particleCount: 1,
+			particleCount,
 			startVelocity: 0,
 			ticks,
 			origin: {
 				x: Math.random(),
-				// since particles fall down, skew start toward the top
 				y: (Math.random() * this.skew) - 0.2,
 			},
-			colors: ['#ffffff'],
+			colors,
 			shapes: ['circle'],
-			gravity: this.#randomInRange(0.2, 0.3),
-			scalar: this.#randomInRange(0.2, 0.4),
-			drift: this.#randomInRange(-0.4, 0.4),
+			gravity: this.#randomInRange(0.2, 0.3) * this.speed,
+			scalar: this.#randomInRange(0.2, 0.4) * this.size,
+			drift: this.#randomInRange(-0.4, 0.4) * this.speed,
 			flat: true,
 		})
 	}
 	/** @override */
 	draw() {
-		// TODO
+		const { globalAlpha } = ctx
+		ctx.globalAlpha = this.opacity
 		ctx.drawImage(this.canvas, 0, 0)
+		ctx.globalAlpha = globalAlpha
 	}
 
 	/**

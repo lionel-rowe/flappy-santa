@@ -46,8 +46,17 @@ canvas.addEventListener('keydown', (e) => {
 })
 
 function gameLoop() {
-	const { background, scenery, snow, ground, player, ui } = game
-	for (const obj of [background, scenery, snow, ground, player, ui]) {
+	for (
+		const obj of [
+			game.background,
+			game.snowBackground,
+			game.scenery,
+			game.snowForeground,
+			game.ground,
+			game.player,
+			game.ui,
+		]
+	) {
 		obj.update()
 		obj.draw()
 	}

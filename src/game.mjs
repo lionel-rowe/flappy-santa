@@ -17,5 +17,6 @@ export const game = {
 	scenery: new Scenery(),
 	ui: new Ui(),
 	background: new Background(),
-	snow: new Snow(),
+	snowForeground: new Snow({ speed: 1, opacity: 1, spawnFrequency: 0.3, size: 1 }),
+	snowBackground: new Snow({ speed: 0.3, opacity: 0.7, spawnFrequency: 0.8, size: 0.6 }),
 }
