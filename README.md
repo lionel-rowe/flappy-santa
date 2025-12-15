@@ -26,10 +26,9 @@ See [SETUP.md](SETUP.md) for instructions on setting up the development environm
   - [x] https://github.com/catdad/canvas-confetti
 - [x] Remove visual artifacts on player sprite
 - [x] Custom assets
-- [ ] Drag sleigh
-  - [ ] Rigid version
-  - [ ] Physics?
-  - [ ] Collisions?
+- [x] Drag sleigh
+  - [x] Physics
+  - [x] Collisions
 
 ## Credits
 

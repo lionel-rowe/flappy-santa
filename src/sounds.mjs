@@ -1,6 +1,6 @@
 // @ts-check
 
-const SOUNDS_DIR = '/sounds'
+const SOUNDS_DIR = './sounds'
 
 /** @typedef {{ volume?: number, playFrom?: number }} SoundProps */
 
