@@ -1,6 +1,6 @@
 // @ts-check
 import { canvas, ctx } from './canvas.mjs'
-import { DELTA_X } from './constants.mjs'
+import { DELTA_X, GROUND_HEIGHT } from './constants.mjs'
 import { GameObject } from './gameObject.mjs'
 import { game } from './game.mjs'
 import { images } from './images.mjs'
@@ -8,11 +8,9 @@ import { images } from './images.mjs'
 export class Ground extends GameObject {
 	img = images.ground
 	x = 0
-	y = 0
+	y = canvas.height - GROUND_HEIGHT
 	/** @override */
 	draw() {
-		this.y = canvas.height - 100
-
 		let x = this.x
 		while (x < canvas.width) {
 			ctx.drawImage(this.img, x, this.y)

@@ -23,10 +23,21 @@ canvas#target {
 		cursor: pointer;
 		padding: 0.5rem;
 		outline: none;
-		filter: invert();
 
 		img {
 			width: 1.5rem;
 		}
+	}
+}
+
+.repo-link {
+	position: absolute;
+	bottom: 0.5rem;
+	right: 0.7rem;
+
+	img.icon {
+		width: 1.3rem;
+		mix-blend-mode: color-burn;
+		opacity: 0.2;
 	}
 }

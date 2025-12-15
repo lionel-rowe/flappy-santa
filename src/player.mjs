@@ -1,11 +1,11 @@
 // @ts-check
-import { ctx } from './canvas.mjs'
+import { canvas, ctx } from './canvas.mjs'
 import { GameObject } from './gameObject.mjs'
 import { game } from './game.mjs'
 import { sounds } from './sounds.mjs'
 import { images } from './images.mjs'
 import { TowTrailer, VerletEngine } from './verlet.mjs'
-import { DELTA_X } from './constants.mjs'
+import { DELTA_X, GROUND_HEIGHT } from './constants.mjs'
 /** @typedef {import('./sprite.mjs').Sprite} Sprite */
 
 export class Player extends GameObject {
@@ -24,11 +24,9 @@ export class Player extends GameObject {
 	constructor() {
 		super()
 		// Physics engine for towing
-		const canvasWidth = ctx.canvas.width
-		const canvasHeight = ctx.canvas.height
 		// Scale gravity to match Verlet engine's time units (pixels/s^2)
 		// 0.125 pixels/frame @ 60fps -> 0.125 * (60^2) = 450
-		this.engine = new VerletEngine(canvasWidth, canvasHeight, 450)
+		this.engine = new VerletEngine(canvas.width, canvas.height - GROUND_HEIGHT, 450)
 		// Tow trailer with tow point at player position, trail point offset behind (left)
 		this.trailer = new TowTrailer(this.x, this.y, this.x - 50, this.y)
 		this.trailer.getTrailPoint().damping = 0.95
@@ -102,8 +100,6 @@ export class Player extends GameObject {
 
 	/** @override */
 	update() {
-		const r = this.playerSprite.spriteWidth / 2
-
 		// Sync tow point to player position
 		const towPoint = this.trailer.getTowPoint()
 		towPoint.x = this.x
@@ -136,13 +132,15 @@ export class Player extends GameObject {
 				this.y += this.speed
 				this.updateRotation()
 				this.speed += this.gravity
-				if (this.y + r >= game.ground.y || this.checkCollision()) {
+				if (this.checkCollision()) {
 					game.status = 'gameOver'
 				}
 
 				break
 			}
 			case 'gameOver': {
+				const r = this.playerSprite.spriteWidth / 2
+
 				this.frame = 1
 				if (this.y + r < game.ground.y) {
 					this.y += this.speed
@@ -181,6 +179,10 @@ export class Player extends GameObject {
 	}
 	/** @returns {boolean} */
 	#checkPlayerCollision() {
+		// check ground collision
+		if (this.y + (this.playerSprite.spriteWidth / 2) >= game.ground.y) return true
+
+		// check obstacle collision
 		const { scenery } = game
 		if (!scenery.obstacles.length) return false
 
@@ -208,11 +210,19 @@ export class Player extends GameObject {
 	}
 	/** @returns {boolean} */
 	#checkTrailerCollision() {
+		const trailPoint = this.trailer.getTrailPoint()
+		const r = (this.sleighSprite.naturalWidth + this.sleighSprite.naturalHeight) / 3
+
+		// check ground collision
+		if (trailPoint.y + r >= game.ground.y) {
+			sounds.hit.play()
+			this.dead = true
+			return true
+		}
+
+		// check obstacle collision
 		const { scenery } = game
 		if (!scenery.obstacles.length) return false
-
-		const trailPoint = this.trailer.getTrailPoint()
-		const r = (this.sleighSprite.naturalWidth + this.sleighSprite.naturalHeight) / 4
 
 		const obstacle = scenery.obstacles[0]
 		const x = obstacle.x

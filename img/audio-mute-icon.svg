@@ -5,9 +5,9 @@
 	width="500"
 	height="500"
 	viewBox="0 0 75 75"
-	stroke="#000"
+	stroke="#fff"
 	stroke-width="5"
 >
-	<path d="m39,14-17,15H6V48H22l17,15z" fill="#000" stroke-linejoin="round" />
+	<path d="m39,14-17,15H6V48H22l17,15z" fill="#fff" stroke-linejoin="round" />
 	<path d="m49,26 20,24m0-24-20,24" fill="none" stroke-linecap="round" />
 </svg>

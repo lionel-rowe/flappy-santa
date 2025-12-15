@@ -10,18 +10,35 @@ const $audio = $audioControls.querySelector('audio')
 assert($button instanceof HTMLButtonElement)
 assert($audio instanceof HTMLAudioElement)
 
-// const playingIcon = '<img src="./img/audio-play-icon.svg" alt="Playing (click to mute)">'
-// const mutedIcon = '<img src="./img/audio-mute-icon.svg" alt="Muted (click to play)">'
-const $playingIcon = Object.assign(new Image(), {
-	src: './img/audio-play-icon.svg',
-	alt: 'Playing (click to mute)',
-	preload: 'auto',
-})
-const $mutedIcon = Object.assign(new Image(), {
-	src: './img/audio-mute-icon.svg',
-	alt: 'Muted (click to play)',
-	preload: 'auto',
-})
+/**
+ * @param {string} src
+ * @param {string} alt
+ * @returns {HTMLImageElement}
+ */
+function icon(src, alt) {
+	const img = new Image()
+	img.src = src
+	img.alt = alt
+	img.title = alt
+	img.className = 'icon audio-icon'
+
+	const preload = document.createElement('link')
+	preload.rel = 'preload'
+	preload.as = 'image'
+	preload.href = src
+	document.head.appendChild(preload)
+
+	return img
+}
+
+const $playingIcon = icon(
+	'./img/audio-play-icon.svg',
+	'Playing (click to mute)',
+)
+const $mutedIcon = icon(
+	'./img/audio-mute-icon.svg',
+	'Muted (click to play)',
+)
 
 $button.addEventListener('click', () => {
 	$button.innerHTML = ''

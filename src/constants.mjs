@@ -9,3 +9,4 @@ export const DELTA_X = 2
 
 export const CANVAS_WIDTH = 276
 export const CANVAS_HEIGHT = 414
+export const GROUND_HEIGHT = 100

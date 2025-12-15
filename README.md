@@ -44,8 +44,9 @@ Christmas assets from various sources:
   - by Viacheslav https://pixabay.com/music/christmas-jingle-bells-444574/ Pixabay License
   - by Kevin MacLeod http://incompetech.com CC BY 4.0
   - Metal version https://davidkbd.itch.io/hou-hou-hou-xmas-songs-turned-to-metal-music-pack
-- Audio icons
+- Icons
   - https://commons.wikimedia.org/wiki/File:Speaker_Icon.svg (CC0/public domain)
   - https://commons.wikimedia.org/wiki/File:Mute_Icon.svg (CC0/public domain)
+  - https://commons.wikimedia.org/wiki/File:Open_Iconic_code.svg (Expat/MIT License)
 - Sounds:
   - die.wav = Crash & Glass.wav by Rock Savage -- https://freesound.org/s/59263/ -- License: Sampling+
