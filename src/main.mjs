@@ -64,4 +64,18 @@ function gameLoop() {
 	++game.frames
 }
 
-setInterval(gameLoop, FRAME_INTERVAL)
+/**
+ * @param {() => void} fn
+ * @param {number} interval
+ */
+function advanceFrame(fn, interval) {
+	let expected = Date.now() + interval
+	function step() {
+		if (document.visibilityState === 'visible') fn()
+		expected += interval
+		setTimeout(step, Math.max(0, expected - Date.now()))
+	}
+	setTimeout(step, interval)
+}
+
+advanceFrame(gameLoop, FRAME_INTERVAL)
