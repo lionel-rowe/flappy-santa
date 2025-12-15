@@ -10,7 +10,7 @@ import { DELTA_X, GROUND_HEIGHT } from './constants.mjs'
 
 export class Player extends GameObject {
 	playerSprite = images.player
-	sleighSprite = images.sleigh
+	sleighImage = images.sleigh
 
 	dead = false
 	rotatation = 0
@@ -28,8 +28,8 @@ export class Player extends GameObject {
 		// 0.125 pixels/frame @ 60fps -> 0.125 * (60^2) = 450
 		this.engine = new VerletEngine(canvas.width, canvas.height - GROUND_HEIGHT, 450)
 		// Tow trailer with tow point at player position, trail point offset behind (left)
-		this.trailer = new TowTrailer(this.x, this.y, this.x - 50, this.y)
-		this.trailer.getTrailPoint().damping = 0.95
+		this.trailer = new TowTrailer(this.x, this.y, this.x - 60, this.y)
+		this.trailer.trailPoint.damping = 0.95
 		this.engine.addBody(this.trailer)
 	}
 
@@ -43,8 +43,8 @@ export class Player extends GameObject {
 	/** @override */
 	draw() {
 		// Draw towed block and rope
-		const trailPoint = this.trailer.getTrailPoint()
-		const towPoint = this.trailer.getTowPoint()
+		const trailPoint = this.trailer.trailPoint
+		const towPoint = this.trailer.towPoint
 
 		// Draw rope (line from tow point to trail point)
 		ctx.strokeStyle = '#2c354d77'
@@ -67,7 +67,7 @@ export class Player extends GameObject {
 		// Simulate rope physics for drawing:
 		// Gravity pulls down (+), Drag pulls opposite to velocity (-velocity)
 		// We use player speed as approximation for system vertical velocity
-		const slack = 12 - (this.speed * 2)
+		const slack = 3 - (this.speed * 2)
 
 		ctx.quadraticCurveTo(midX, midY + slack, endX, endY)
 
@@ -75,15 +75,15 @@ export class Player extends GameObject {
 
 		// Draw sleigh
 		ctx.commit(() => {
-			const w = this.sleighSprite.naturalWidth
-			const h = this.sleighSprite.naturalHeight
+			const w = this.sleighImage.naturalWidth
+			const h = this.sleighImage.naturalHeight
 
 			const angle = Math.atan2(towPoint.y - trailPoint.y, towPoint.x - trailPoint.x)
 			ctx.translate(trailPoint.x, trailPoint.y)
 			ctx.rotate(angle)
 
 			// ctx.fillRect(trailPoint.x - (w / 2), trailPoint.y - (h / 2), w, h)
-			ctx.drawImage(this.sleighSprite, -w / 2, -h / 2, w, h)
+			ctx.drawImage(this.sleighImage, -w / 2, -h / 2, w, h)
 		})
 
 		// Draw player
@@ -101,7 +101,7 @@ export class Player extends GameObject {
 	/** @override */
 	update() {
 		// Sync tow point to player position
-		const towPoint = this.trailer.getTowPoint()
+		const towPoint = this.trailer.towPoint
 		towPoint.x = this.x
 		towPoint.y = this.y
 		towPoint.lastX = this.x
@@ -115,7 +115,7 @@ export class Player extends GameObject {
 		// Scale force to match Verlet engine units: force * (1/dt^2)
 		// DELTA_X is 2. We want a strong drag.
 		const forceScale = 3900 // ~ 1 / 0.016^2
-		this.trailer.getTrailPoint().addForce(-DELTA_X * 0.5 * forceScale, -0.06 * forceScale)
+		this.trailer.trailPoint.addForce(-DELTA_X * 0.5 * forceScale, -0.06 * forceScale)
 
 		// Update physics engine - this applies gravity and solves constraints
 		if (!this.dead) this.engine.update(0.016)
@@ -186,13 +186,12 @@ export class Player extends GameObject {
 		const { scenery } = game
 		if (!scenery.obstacles.length) return false
 
-		const x = scenery.obstacles[0].x
-		const y = scenery.obstacles[0].y
+		const { x, y } = scenery.obstacles[0]
 		const r = (this.playerSprite.spriteHeight + this.playerSprite.spriteWidth) / 4
+		const w = scenery.top.img.width
 
 		const roof = y + scenery.top.img.height
 		const floor = roof + scenery.gap
-		const w = scenery.top.img.width
 		if (this.x + r >= x) {
 			if (this.x + r < x + w) {
 				if (this.y - r <= roof || this.y + r >= floor) {
@@ -210,11 +209,11 @@ export class Player extends GameObject {
 	}
 	/** @returns {boolean} */
 	#checkTrailerCollision() {
-		const trailPoint = this.trailer.getTrailPoint()
-		const r = (this.sleighSprite.naturalWidth + this.sleighSprite.naturalHeight) / 3
+		const trailPoint = this.trailer.trailPoint
+		const r = (this.sleighImage.naturalWidth + this.sleighImage.naturalHeight) / 4
 
 		// check ground collision
-		if (trailPoint.y + r >= game.ground.y) {
+		if (trailPoint.y + (r * 4 / 3) >= game.ground.y) {
 			sounds.hit.play()
 			this.dead = true
 			return true
@@ -224,9 +223,7 @@ export class Player extends GameObject {
 		const { scenery } = game
 		if (!scenery.obstacles.length) return false
 
-		const obstacle = scenery.obstacles[0]
-		const x = obstacle.x
-		const y = obstacle.y
+		const { x, y } = scenery.obstacles[0]
 		const w = scenery.top.img.width
 
 		const roof = y + scenery.top.img.height

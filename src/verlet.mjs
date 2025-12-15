@@ -221,22 +221,6 @@ export class TowTrailer {
 	}
 
 	/**
-	 * Get the tow point
-	 * @returns {PointMass}
-	 */
-	getTowPoint() {
-		return this.towPoint
-	}
-
-	/**
-	 * Get the trail point
-	 * @returns {PointMass}
-	 */
-	getTrailPoint() {
-		return this.trailPoint
-	}
-
-	/**
 	 * Pull the tow point in a given direction
 	 * @param {number} directionDegrees Direction in degrees (0 = up, 90 = east, 180 = down, 270 = west)
 	 * @param {number} [force] Magnitude of the pulling force
