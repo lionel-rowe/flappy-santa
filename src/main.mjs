@@ -69,13 +69,18 @@ function gameLoop() {
  * @param {number} interval
  */
 function advanceFrame(fn, interval) {
-	let expected = Date.now() + interval
-	function step() {
-		if (document.visibilityState === 'visible') fn()
-		expected += interval
-		setTimeout(step, Math.max(0, expected - Date.now()))
+	let previousExecution = performance.now()
+	requestAnimationFrame(loop)
+
+	/** @param {number} currentTime */
+	function loop(currentTime) {
+		const deltaTime = currentTime - previousExecution
+		if (deltaTime >= interval) {
+			fn()
+			previousExecution += interval
+		}
+		requestAnimationFrame(loop)
 	}
-	setTimeout(step, interval)
 }
 
 advanceFrame(gameLoop, FRAME_INTERVAL)
