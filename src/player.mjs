@@ -28,7 +28,7 @@ export class Player extends GameObject {
 		const canvasHeight = ctx.canvas.height
 		// Scale gravity to match Verlet engine's time units (pixels/s^2)
 		// 0.125 pixels/frame @ 60fps -> 0.125 * (60^2) = 450
-		this.engine = new VerletEngine(canvasWidth, canvasHeight - images.ground.naturalHeight, 450)
+		this.engine = new VerletEngine(canvasWidth, canvasHeight, 450)
 		// Tow trailer with tow point at player position, trail point offset behind (left)
 		this.trailer = new TowTrailer(this.x, this.y, this.x - 50, this.y)
 		this.trailer.getTrailPoint().damping = 0.95
@@ -77,9 +77,8 @@ export class Player extends GameObject {
 
 		ctx.stroke()
 
-		{
-			ctx.save()
-			// Draw towed block (green square)
+		// Draw sleigh
+		ctx.commit(() => {
 			const w = this.sleighSprite.naturalWidth
 			const h = this.sleighSprite.naturalHeight
 
@@ -89,17 +88,18 @@ export class Player extends GameObject {
 
 			// ctx.fillRect(trailPoint.x - (w / 2), trailPoint.y - (h / 2), w, h)
 			ctx.drawImage(this.sleighSprite, -w / 2, -h / 2, w, h)
-			ctx.restore()
-		}
+		})
 
 		// Draw player
-		ctx.save()
-		ctx.translate(this.x, this.y)
-		ctx.rotate(this.rotatation * Math.PI / 180)
-		const h = this.playerSprite.spriteHeight
-		const w = this.playerSprite.spriteWidth
-		this.playerSprite.render(ctx, [-w / 2, -h / 2], this.frame)
-		ctx.restore()
+		ctx.commit(() => {
+			const h = this.playerSprite.spriteHeight
+			const w = this.playerSprite.spriteWidth
+
+			ctx.translate(this.x, this.y)
+			ctx.rotate(this.rotatation * Math.PI / 180)
+
+			this.playerSprite.render(ctx, [-w / 2, -h / 2], this.frame)
+		})
 	}
 
 	/** @override */
@@ -177,9 +177,14 @@ export class Player extends GameObject {
 			this.rotatation = Math.max(-25, (-25 * this.speed) / (-1 * this.thrust))
 		}
 	}
+	/** @returns {boolean} */
 	checkCollision() {
+		return this.#checkPlayerCollision() || this.#checkTrailerCollision()
+	}
+	/** @returns {boolean} */
+	#checkPlayerCollision() {
 		const { scenery } = game
-		if (!scenery.obstacles.length) return
+		if (!scenery.obstacles.length) return false
 
 		const x = scenery.obstacles[0].x
 		const y = scenery.obstacles[0].y
@@ -200,5 +205,32 @@ export class Player extends GameObject {
 				scenery.moved = false
 			}
 		}
+
+		return false
+	}
+	/** @returns {boolean} */
+	#checkTrailerCollision() {
+		const { scenery } = game
+		if (!scenery.obstacles.length) return false
+
+		const trailPoint = this.trailer.getTrailPoint()
+		const r = (this.sleighSprite.naturalWidth + this.sleighSprite.naturalHeight) / 4
+
+		const obstacle = scenery.obstacles[0]
+		const x = obstacle.x
+		const y = obstacle.y
+		const w = scenery.top.img.width
+
+		const roof = y + scenery.top.img.height
+		const floor = roof + scenery.gap
+
+		if (trailPoint.x + r >= x && trailPoint.x - r <= x + w) {
+			if (trailPoint.y - r <= roof || trailPoint.y + r >= floor) {
+				sounds.hit.play()
+				return true
+			}
+		}
+
+		return false
 	}
 }

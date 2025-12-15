@@ -11,7 +11,7 @@ export class Ground extends GameObject {
 	y = 0
 	/** @override */
 	draw() {
-		this.y = canvas.height - this.img.height
+		this.y = canvas.height - 100
 
 		let x = this.x
 		while (x < canvas.width) {

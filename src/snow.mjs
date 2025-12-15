@@ -57,10 +57,10 @@ export class Snow extends GameObject {
 	}
 	/** @override */
 	draw() {
-		ctx.save()
-		ctx.globalAlpha = this.opacity
-		ctx.drawImage(this.canvas, 0, 0)
-		ctx.restore()
+		ctx.commit(() => {
+			ctx.globalAlpha = this.opacity
+			ctx.drawImage(this.canvas, 0, 0)
+		})
 	}
 
 	/**

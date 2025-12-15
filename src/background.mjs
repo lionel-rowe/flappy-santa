@@ -12,10 +12,10 @@ export class Background extends GameObject {
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 		// draw at half opacity
-		ctx.save()
-		ctx.globalAlpha = 0.5
-		ctx.drawImage(this.img, 0, 0, canvas.width, canvas.height)
-		ctx.restore()
+		ctx.commit(() => {
+			ctx.globalAlpha = 0.5
+			ctx.drawImage(this.img, 0, 0, canvas.width, canvas.height)
+		})
 	}
 	/** @override */
 	update() {

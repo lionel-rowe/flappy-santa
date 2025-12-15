@@ -19,7 +19,8 @@ class Obstacle {
 export class Scenery extends GameObject {
 	top = { img: images.obstacleTop }
 	bottom = { img: images.obstacleBottom }
-	gap = 100
+	gap = 130
+	distance = 120
 	moved = true
 	obstacles = /** @type {Obstacle[]} */ ([])
 	/** @override */
@@ -37,7 +38,7 @@ export class Scenery extends GameObject {
 	/** @override */
 	update() {
 		if (game.status !== 'playing') return
-		if (game.frames % 100 === 0) {
+		if (game.frames % this.distance === 0) {
 			this.obstacles.push(
 				new Obstacle(
 					canvas.width,

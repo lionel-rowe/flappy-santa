@@ -26,9 +26,6 @@ export const sounds = {
 	start: new SoundEffect(`${SOUNDS_DIR}/start.wav`),
 	boost: new SoundEffect(`${SOUNDS_DIR}/boost.wav`),
 	score: new SoundEffect(`${SOUNDS_DIR}/score.wav`),
-	hit: new SoundEffect(`${SOUNDS_DIR}/hit.wav`),
-	die: new SoundEffect(`${SOUNDS_DIR}/die.wav`, {
-		volume: 0.5,
-		playFrom: 0.3,
-	}),
+	hit: new SoundEffect(`${SOUNDS_DIR}/crash.wav`, { playFrom: 0.3 }),
+	die: new SoundEffect(`${SOUNDS_DIR}/thwack.wav`),
 }
