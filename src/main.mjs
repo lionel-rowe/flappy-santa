@@ -28,6 +28,8 @@ function doAction() {
 			break
 		}
 		case 'gameOver': {
+			if (!game.player.dead) return
+
 			game.status = 'initial'
 			game.score = 0
 			game.scenery = new Scenery()

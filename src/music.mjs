@@ -1,7 +1,7 @@
 // @ts-check
 import { assert } from './utils.mjs'
 
-const $audioControls = document.getElementById('audio-controls')
+export const $audioControls = document.getElementById('audio-controls')
 assert($audioControls instanceof HTMLElement)
 
 const $button = $audioControls.querySelector('button')
@@ -22,11 +22,11 @@ function icon(src, alt) {
 	img.title = alt
 	img.className = 'icon audio-icon'
 
-	const preload = document.createElement('link')
-	preload.rel = 'preload'
-	preload.as = 'image'
-	preload.href = src
-	document.head.appendChild(preload)
+	const $preload = document.createElement('link')
+	$preload.rel = 'preload'
+	$preload.as = 'image'
+	$preload.href = src
+	document.head.append($preload)
 
 	return img
 }
@@ -60,16 +60,18 @@ if (localStorage.getItem('music-muted')) {
 
 	// liable to be blocked by browser autoplay policy, in which case
 	// the promise rejects, and we wait for a user interaction to start the audio
-	$audio.play().catch(() => {
+	try {
+		await $audio.play()
+	} catch {
 		const ac = new AbortController()
 		const { signal } = ac
 		for (const event of ['click', 'keyup']) {
-			document.body.addEventListener(event, (e) => {
-				if (e.target !== $button) {
-					$audio.play()
+			document.body.addEventListener(event, async (e) => {
+				if (e.target instanceof Element && !$audioControls.contains(e.target)) {
+					await $audio.play()
 					ac.abort()
 				}
 			}, { signal })
 		}
-	})
+	}
 }

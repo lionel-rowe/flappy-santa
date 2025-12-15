@@ -13,14 +13,25 @@ export class Ground extends GameObject {
 	draw() {
 		let x = this.x
 		while (x < canvas.width) {
-			ctx.drawImage(this.img, x, this.y)
-			x += this.img.width / 2
+			ctx.drawImage(
+				this.img,
+				0,
+				0,
+				this.img.width,
+				this.img.height,
+				x,
+				this.y,
+				// paint at double size to better match the other background assets
+				this.img.width * 2,
+				this.img.height * 2,
+			)
+			x += this.img.width
 		}
 	}
 	/** @override */
 	update() {
 		if (game.status !== 'playing') return
 		this.x -= DELTA_X
-		this.x = this.x % (this.img.width / 2)
+		this.x = this.x % (this.img.width)
 	}
 }
