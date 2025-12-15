@@ -33,21 +33,21 @@ export class Snow extends GameObject {
 
 	/** @override */
 	update() {
+		if (document.visibilityState !== 'visible') return
+		if (Math.random() > this.spawnFrequency) return
+
 		const ticks = 500
 		this.skew = Math.max(0.8, this.skew - 0.001)
 
-		const particleCount = Number(this.spawnFrequency > Math.random())
-		const colors = ['#ffffff']
-
 		this.confetti({
-			particleCount,
+			particleCount: 1,
 			startVelocity: 0,
 			ticks,
 			origin: {
 				x: Math.random(),
 				y: (Math.random() * this.skew) - 0.2,
 			},
-			colors,
+			colors: ['#ffffff'],
 			shapes: ['circle'],
 			gravity: this.#randomInRange(0.2, 0.3) * this.speed,
 			scalar: this.#randomInRange(0.2, 0.4) * this.size,

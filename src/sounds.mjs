@@ -13,6 +13,7 @@ class SoundEffect extends Audio {
 		super(src)
 		this.volume = props?.volume ?? 1
 		this.playFrom = props?.playFrom ?? 0
+		this.preload = /** @type {const} */ ('auto')
 	}
 
 	/** @override */

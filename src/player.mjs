@@ -57,12 +57,10 @@ export class Player extends GameObject {
 		let endX = trailPoint.x
 		let endY = trailPoint.y
 
-		// modify endX and endY so they end in the center of the sleigh sprite
+		// modify endX and endY so they end partway behind the sleigh sprite (avoid visible gap)
 		const angle = Math.atan2(towPoint.y - trailPoint.y, towPoint.x - trailPoint.x)
-		const sleighWidth = this.sleighSprite.naturalWidth
-		// const sleighHeight = this.sleighSprite.naturalHeight
-		endX -= (sleighWidth / 2) * Math.cos(angle)
-		endY -= (sleighWidth / 2) * Math.sin(angle)
+		endX -= 10 * Math.cos(angle)
+		endY -= 10 * Math.sin(angle)
 
 		// Calculate slack
 		const midX = (towPoint.x + endX) / 2
@@ -71,9 +69,9 @@ export class Player extends GameObject {
 		// Simulate rope physics for drawing:
 		// Gravity pulls down (+), Drag pulls opposite to velocity (-velocity)
 		// We use player speed as approximation for system vertical velocity
-		const sag = 12 - (this.speed * 2)
+		const slack = 12 - (this.speed * 2)
 
-		ctx.quadraticCurveTo(midX, midY + sag, endX, endY)
+		ctx.quadraticCurveTo(midX, midY + slack, endX, endY)
 
 		ctx.stroke()
 
